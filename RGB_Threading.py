@@ -33,8 +33,11 @@ class VisThread(Thread):
         for i in range(len(self.amplitudes)):
 
             if self.amplitudes[i] > 100000:
-                #self.SM.writeSegment(self.SM.LED_segments[i])
-                print(f"segment {i} illuminated")
+                self.SM.writeSegment(self.SM.LED_segments[i])
+                #print(f"segment {i} illuminated")
+            else:
+                self.SM.turnOffSegment(self.SM.LED_segments[i])
+                
 
 
 class ThreadManager:
