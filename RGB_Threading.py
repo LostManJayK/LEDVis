@@ -25,7 +25,7 @@ class VisThread(Thread):
     def __init__(self, amplitudes):
 
         super().__init__()
-        #self.SM = StripManager()
+        self.SM = StripManager()
         self.amplitudes = amplitudes
 
     def run(self):

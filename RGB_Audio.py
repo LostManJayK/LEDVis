@@ -42,7 +42,7 @@ class AudioManager:
 
     def getAmplitudes(self):
         return self.amplitudes
-'''
+
     def plotFrequencies(self):
 
         N = len(self.frequencies)
@@ -50,7 +50,7 @@ class AudioManager:
         mpl.figure()
         mpl.plot(self.frequencies[0:N//2], self.fft_data[0:N//2])
         mpl.show()
-'''
+
     def record(self):
 
         stream = self.recorder.open(format=self.FORMAT,
