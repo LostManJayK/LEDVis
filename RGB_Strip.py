@@ -3,25 +3,35 @@ import time
 
 class LEDSegment:
 
-    colours = {
-    "red": (255, 0, 0),    # Red
-    "orange": (255, 165, 0),  # Orange
-    "yellow": (255, 255, 0),  # Yellow
-    "green": (0, 255, 0),    # Green
-    "blue": (0, 0, 255),    # Blue
-    "purple": (148, 0, 211)   # Violet
-    }
+    # colours = {
+    # "red": (255, 0, 0),    # Red
+    # "orange": (255, 165, 0),  # Orange
+    # "yellow": (255, 255, 0),  # Yellow
+    # "green": (0, 255, 0),    # Green
+    # "blue": (0, 0, 255),    # Blue
+    # "purple": (148, 0, 211)   # Violet
+    # }
 
-    def __init__(self, colour="red", pixel_range=(0, 144), pos=0):
-        self.colour = colour
+    colours = [
+    (255, 0, 0),    # Red
+    (255, 165, 0),  # Orange
+    (255, 255, 0),  # Yellow
+    (0, 255, 0),    # Green
+    (0, 0, 255),    # Blue
+    (148, 0, 211)   # Violet
+    ]
+
+    def __init__(self, pixel_range=(0, 144), pos=0):
+        #self.colour = colour
         self.is_on = False
         self.pixel_range = pixel_range
+        self.pos = pos
 
     def illuminate(self, strip, turn_off=False):
         
         if not turn_off:
             for i in range(*self.pixel_range):
-                strip.setPixelColor(i, Color(*LEDSegment.colours[self.colour]))
+                strip.setPixelColor(i, Color(*LEDSegment.colours[self.pos]))
                 strip.show()
         else:
             for i in range(*self.pixel_range):
@@ -47,7 +57,7 @@ class StripManager:
         i = 0
         segment_count = LED_COUNT//6
         for c in LEDSegment.colours:
-            self.LED_segments.append(LEDSegment(c, (i, i+segment_count-1), i//segment_count))
+            self.LED_segments.append(LEDSegment((i, i+segment_count-1), i//segment_count))
             i += segment_count
 
         self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS)

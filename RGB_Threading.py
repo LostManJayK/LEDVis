@@ -46,6 +46,7 @@ class ThreadManager:
         self.at = None
         self.vt = None
         self.frequency_amplitudes = [] #Will be updated by the frequency amplitudes throughout the program
+        self.colour_info = [] #Received from GUI
 
     def newAudioThread(self):
 
@@ -61,6 +62,20 @@ class ThreadManager:
         self.vt = VisThread(self.frequency_amplitudes)
         self.vt.start()
 
+    def runLED(self):
+        
+        TM = ThreadManager()
+
+        TM.newAudioThread()
+
+        while True:
+
+            TM.newVisThread()
+            TM.newAudioThread()
+
+    def updateColour(self):
+
+        LEDSegment.colours[self.colour_info[0]] = tuple(self.colour_info[1:3])
 
 
     
@@ -70,7 +85,7 @@ if __name__ == "__main__":
 
     TM.newAudioThread()
 
-    for i in range(60):
+    while True:
 
         TM.newVisThread()
         TM.newAudioThread()

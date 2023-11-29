@@ -1,6 +1,10 @@
 import time
 from tkinter import *
 from tkinter.messagebox import *
+from RGB_Threading import ThreadManager
+import RGB_Strip
+import threading
+
 
 class strip_gui:
     def __init__(self):
@@ -26,7 +30,7 @@ class strip_gui:
         self.label2 = Label(self.main_window, text="Microphone-based LED Controller", font=("Microsoft Sans Serif", 16))
         self.label2.place(x=50,y=30)
 
-        self.colours = ("Colour 1", "Colour 2", "Colour 3", "Colour 4", "Colour 5", "Colour 6", "Colour 7", "Colour 8")
+        self.colours = ("Colour 1", "Colour 2", "Colour 3", "Colour 4", "Colour 5", "Colour 6")
         self.preset_list = Variable(value=self.colours)
 
         self.listbox1 = Listbox(self.main_window, listvariable=self.preset_list, height=8)
@@ -37,13 +41,24 @@ class strip_gui:
 
         self.button = Button(self.main_window, text="Set Value", command=self.get_value)
         self.button.place(x=100,y=280)
+
+
+        self.TM = ThreadManager() #For handling all LED and Microphone operations
+        self.startLED()
         mainloop()
+
     def get_value(self):
         #selection = "Value: R" + str(self.var1.get()) + "  G" + str(self.var2.get()) + "  B" + str(self.var3.get())
         #self.label1.config(text=selection)
         selected_colours = [self.var1.get(), self.var2.get(), self.var3.get()]
+        print(selected_colours)
         selected_preset = self.listbox1.curselection()
-        return [selected_preset, selected_colours[0], selected_colours[1], selected_colours[2]]
-        
+        RGB_Strip.LEDSegment.colours[selected_preset[0]] = tuple(selected_colours)
+
+
+    def startLED(self):
+
+        led_thread = threading.Thread(target=self.TM.runLED)
+        led_thread.start()
 
 start = strip_gui()
