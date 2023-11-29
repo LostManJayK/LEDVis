@@ -2,7 +2,7 @@
 #from matplotlib import pyplot as mpl
 import numpy as np
 import pyaudio
-import wave
+#import wave
 
 class AudioManager:
 
@@ -20,7 +20,7 @@ class AudioManager:
         self.RATE = 44100 #Samples per second
         self.CHANNELS = 1 #Record in mono
         self.FORMAT = pyaudio.paInt16 #Audio format
-        self.CHUNK = 1024 #frames per sample
+        self.CHUNK = 4*1024 #frames per sample
         self.recorder = pyaudio.PyAudio() #PyAudio instance for recording
         self.audio_data = []
 
@@ -43,13 +43,6 @@ class AudioManager:
     def getAmplitudes(self):
         return self.amplitudes
 
-    def plotFrequencies(self):
-
-        N = len(self.frequencies)
-
-        mpl.figure()
-        mpl.plot(self.frequencies[0:N//2], self.fft_data[0:N//2])
-        mpl.show()
 
     def record(self):
 
@@ -66,6 +59,7 @@ class AudioManager:
             data = stream.read(self.CHUNK)
             self.audio_data.extend(np.frombuffer(data, dtype=np.int16))
         
+        self.recorder.close(stream)
         print("End recording...")
 
 
@@ -74,10 +68,20 @@ class AudioManager:
 if __name__ == "__main__":
     a = AudioManager()
 
-    print(a.getAmplitudes())
+    
     a.record()
     a.fftInit()
     a.filterFrequencies()
-    a.plotFrequencies()
+    print(a.getAmplitudes())
+    #a.plotFrequencies()
 
 
+'''
+def plotFrequencies(self):
+
+    N = len(self.frequencies)
+
+    mpl.figure()
+    mpl.plot(self.frequencies[0:N//2], self.fft_data[0:N//2])
+    mpl.show()
+'''

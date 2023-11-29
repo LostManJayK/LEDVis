@@ -31,10 +31,9 @@ class VisThread(Thread):
     def run(self):
 
         for i in range(len(self.amplitudes)):
-
             if self.amplitudes[i] > 100000:
                 self.SM.writeSegment(self.SM.LED_segments[i])
-                #print(f"segment {i} illuminated")
+                print(f"segment {i} illuminated")
             else:
                 self.SM.turnOffSegment(self.SM.LED_segments[i])
                 
@@ -53,7 +52,7 @@ class ThreadManager:
         self.at = AudioThread()
         self.at.start()   
         self.at.join()
-        self.frequency_amplitudes = self.at.AM.amplitudes 
+        self.frequency_amplitudes = self.at.AM.amplitudes
 
         
 
