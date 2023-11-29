@@ -77,9 +77,11 @@ class StripManager:
 if __name__ == "__main__":
     
     sm = StripManager()
-    sm.writeSegment(sm.LED_segments[0])
-    time.sleep(1)
-    sm.turnOffSegment(sm.LED_segments[0])
+    for i in range(6):
+        
+        sm.writeSegment(sm.LED_segments[i])
+
+        sm.turnOffSegment(sm.LED_segments[i])
 	
 
     

@@ -12,15 +12,15 @@ class strip_gui:
         self.main_window.geometry("540x380+100+100")
         self.main_window.title("CMPT2200")
         
-        self.var1 = DoubleVar()
+        self.var1 = IntVar()
         self.scale1 = Scale(self.main_window, variable=self.var1, from_=0, to=255)
         self.scale1.place(x=50,y=120)
         
-        self.var2 = DoubleVar()
+        self.var2 = IntVar()
         self.scale2 = Scale(self.main_window, variable=self.var2, from_=0, to=255)
         self.scale2.place(x=130,y=120)
         
-        self.var3 = DoubleVar()
+        self.var3 = IntVar()
         self.scale3 = Scale(self.main_window, variable=self.var3, from_=0, to=255)
         self.scale3.place(x=210,y=120)
         
@@ -41,6 +41,9 @@ class strip_gui:
 
         self.button = Button(self.main_window, text="Set Value", command=self.get_value)
         self.button.place(x=100,y=280)
+        
+        self.button2 = Button(self.main_window, text="Terminate", command=self.terminate)
+        self.button2.place(x=100,y=310)
 
 
         self.TM = ThreadManager() #For handling all LED and Microphone operations
@@ -53,12 +56,19 @@ class strip_gui:
         selected_colours = [self.var1.get(), self.var2.get(), self.var3.get()]
         print(selected_colours)
         selected_preset = self.listbox1.curselection()
-        RGB_Strip.LEDSegment.colours[selected_preset[0]] = tuple(selected_colours)
+        RGB_Strip.LEDSegment.colours[int(selected_preset[0])] = tuple(selected_colours)
 
 
     def startLED(self):
 
         led_thread = threading.Thread(target=self.TM.runLED)
         led_thread.start()
+        
+    def terminate(self):
+        
+        self.TM.is_over = True
+        exit()
+        
+        
 
 start = strip_gui()

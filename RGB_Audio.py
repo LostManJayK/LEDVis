@@ -12,7 +12,7 @@ class AudioManager:
 
         #FFT variables
         self.frequencies = None
-        self.frequency_ranges = [(50, 220), (221, 550), (551, 1000), (1001, 2000), (2001, 5000), (5001, 25000)] #Define frequency bands
+        self.frequency_ranges = [(50, 220), (221, 550), (551, 1000), (1001, 2000), (2001, 4000), (4001, 10000)] #Define frequency bands
         self.fft_data = None #FFT results
         self.amplitudes = [None for frange in self.frequency_ranges] #Signal strength at each frequency
 

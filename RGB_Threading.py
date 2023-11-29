@@ -31,12 +31,14 @@ class VisThread(Thread):
     def run(self):
 
         for i in range(len(self.amplitudes)):
-            if self.amplitudes[i] > 100000:
+            if self.amplitudes[i] > 15000 + (i==0)*80000 - (i==5)*11000:
                 self.SM.writeSegment(self.SM.LED_segments[i])
+                self.SM.LED_segments[i].is_on = True 
                 print(f"segment {i} illuminated")
             else:
-                self.SM.turnOffSegment(self.SM.LED_segments[i])
-                
+                if self.SM.LED_segments[i].is_on ==True:
+                    self.SM.turnOffSegment(self.SM.LED_segments[i])
+                    self.SM.LED_segments[i].is_on == False
 
 
 class ThreadManager:
@@ -47,6 +49,7 @@ class ThreadManager:
         self.vt = None
         self.frequency_amplitudes = [] #Will be updated by the frequency amplitudes throughout the program
         self.colour_info = [] #Received from GUI
+        self.is_over = False #For ending the program
 
     def newAudioThread(self):
 
@@ -61,6 +64,7 @@ class ThreadManager:
 
         self.vt = VisThread(self.frequency_amplitudes)
         self.vt.start()
+        self.vt.join()
 
     def runLED(self):
         
@@ -68,7 +72,7 @@ class ThreadManager:
 
         TM.newAudioThread()
 
-        while True:
+        while not self.is_over:
 
             TM.newVisThread()
             TM.newAudioThread()
@@ -85,7 +89,7 @@ if __name__ == "__main__":
 
     TM.newAudioThread()
 
-    while True:
+    for i in range(100):
 
         TM.newVisThread()
         TM.newAudioThread()
